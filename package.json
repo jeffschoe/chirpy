@@ -1,0 +1,33 @@
+{
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.3",
+    "typescript": "^5.9.3"
+  },
+  "name": "chirpy",
+  "version": "1.0.0",
+  "description": "Boot.dev guided project: Build an HTTP Server in TypeScript.",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^5.2.1",
+    "undici-types": "^7.16.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "npx tsc && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffschoe/chirpy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/jeffschoe/chirpy/issues"
+  },
+  "homepage": "https://github.com/jeffschoe/chirpy#readme"
+}
