@@ -1,11 +1,15 @@
 import express from "express";
 
 import { handlerReadiness } from "./api/readiness.js";
+import { middlewareLogResponse } from "./api/middleware.js";
 
 const app = express();
 const PORT = 8080;
 
-app.use("/app", express.static(`./src"/app"`));
+app.use(middlewareLogResponse); 
+//every incoming request goes through this middleware first.
+
+app.use("/app", express.static("./src/app"));
 //app.use - allows you to mount middleware functions
 //middleware are a series of functions that Express calls in order, like a chain, 
 //when an HTTP request comes into your server
@@ -25,8 +29,11 @@ app.get('/healthz', handlerReadiness)
  * GET request comes in to /healthz
  * Express automatically creates the req and res objects for us, 
  * they are not explicity passed
+ * NOTE, Express still calls middlewareLogResponse first, then 
+ * if/when next() is called, it calls handlerReadiness.
  */
 
 app.listen(PORT, () => {
   console.log(`Server is runing at http://localhost:${PORT}`)
 });
+

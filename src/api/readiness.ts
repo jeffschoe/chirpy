@@ -15,7 +15,6 @@ export async function handlerReadiness(req: Request, res: Response) {
    */
 
   logRequest(req);
-  logResponse(res);
 
   res.set("Content-Type", "text/plain; charset=utf-8");
   res.send("OK");
@@ -26,13 +25,14 @@ export async function handlerReadiness(req: Request, res: Response) {
 
 function logRequest(req: Request) {
   console.log('==========Request Log==========')
-  console.log(`* Request Method:  ${req.method}`);
-  console.log(`* Request URL:     ${req.url}`);
-  console.log(`* Request Headers: ${JSON.stringify(req.headers)}`);
-  console.log(`* Request Params:  ${JSON.stringify(req.params)}`);
-  console.log(`* Request Query:   ${JSON.stringify(req.query)}`);
-  console.log(`* Request Body:    ${req.body}`);
-  console.log(`* Request IP:      ${req.ip}`);
+  console.log(`* Request Method:      ${req.method}`);
+  console.log(`* Request URL:         ${req.url}`);
+  console.log(`* Request Headers:     ${JSON.stringify(req.headers)}`);
+  console.log(`* Request Params:      ${JSON.stringify(req.params)}`);
+  console.log(`* Request Query:       ${JSON.stringify(req.query)}`);
+  console.log(`* Request Body:        ${req.body}`);
+  console.log(`* Request IP:          ${req.ip}`);
+  console.log(`* Request Status Code: ${req.statusCode}`);
 }
 
 function logResponse(res: Response) {
