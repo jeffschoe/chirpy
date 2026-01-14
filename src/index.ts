@@ -44,8 +44,8 @@ app.get('/api/healthz', handlerReadiness)
  * if/when next() is called, it calls handlerReadiness.
  */
 
-app.get('/api/metrics', handlerMetrics)
-app.get('/api/reset', handlerReset)
+app.get('/admin/metrics', handlerMetrics)
+app.get('/admin/reset', handlerReset)
 
 app.listen(PORT, () => {
   console.log(`Server is runing at http://localhost:${PORT}`)
