@@ -14,6 +14,7 @@ const PORT = 8080;
 
 app.use(middlewareLogResponse); 
 //every incoming request goes through this middleware first.
+//All httpe methods (get, post, etc) go through app.use
 
 app.use(
   "/app", 
@@ -29,7 +30,7 @@ app.use(
 //"middleware should only be executed when the URL path of the incoming request 
 //starts with PATH"
 
-app.get('/healthz', handlerReadiness)
+app.get('/api/healthz', handlerReadiness)
 /**
  * .get: - tells Express to listen for HTTP GET requests specifically
  * /healthz: This is the path (or route) that the handler will respond to. 
@@ -43,8 +44,8 @@ app.get('/healthz', handlerReadiness)
  * if/when next() is called, it calls handlerReadiness.
  */
 
-app.get('/metrics', handlerMetrics)
-app.get('/reset', handlerReset)
+app.get('/api/metrics', handlerMetrics)
+app.get('/api/reset', handlerReset)
 
 app.listen(PORT, () => {
   console.log(`Server is runing at http://localhost:${PORT}`)
