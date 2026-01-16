@@ -7,28 +7,16 @@ export async function handlerChirpsValidate(req: Request, res: Response) {
     body: string;
   };
 
-  let body = "";
+  const params: parameters = req.body; // req.body is automatically parsed thank to app.use(express.json()) in index.ts
 
-  req.on("data", (chunk) => {
-    body += chunk;
+  const maxChirpLength = 140;
+  if (params.body.length > maxChirpLength) {
+    respondWithError(res, 400, "Chirp is too long");
+    return;
+  }
+
+  respondWithJSON(res, 200, {
+    valid: true,
   });
-
-  let params: parameters;
-  req.on("end", () => {
-    try {
-      params = JSON.parse(body);
-    } catch (e) {
-      respondWithError(res, 400, "Invalid JSON");
-      return;
-    }
-    const maxChirpLength = 140;
-    if (params.body.length > maxChirpLength) {
-      respondWithError(res, 400, "Chirp is too long");
-      return;
-    }
-
-    respondWithJSON(res, 200, {
-      valid: true,
-    });
-  });
+  
 }

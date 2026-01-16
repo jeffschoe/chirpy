@@ -17,6 +17,7 @@ app.use(middlewareLogResponse);
 //every incoming request goes through this middleware first.
 //All httpe methods (get, post, etc) go through app.use
 
+app.use(express.json()); // Built-in JSON body parsing middleware
 app.use(
   "/app", 
   middlewareMetricsInc, 
