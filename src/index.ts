@@ -4,6 +4,7 @@ import { handlerReadiness } from "./api/readiness.js";
 import { handlerMetrics } from "./api/metrics.js";
 import { handlerReset } from "./api/reset.js";
 import { 
+  middlewareHandleError,
   middlewareLogResponse, 
   middlewareMetricsInc 
 } from "./api/middleware.js";
@@ -27,12 +28,14 @@ app.use(
 //middleware are a series of functions that Express calls in order, like a chain, 
 //when an HTTP request comes into your server
 //we are using the express.static middleware, which serves static files
-//arg to express.statis is is the actual file system directory where those files live
+//arg to express.static is is the actual file system directory where those files live
 //1st arg, `path`, is the path for which we will call the middleware function/s or,
 //"middleware should only be executed when the URL path of the incoming request 
 //starts with PATH"
 
-app.get('/api/healthz', handlerReadiness)
+app.get('/api/healthz', (req, res, next) => {
+  Promise.resolve(handlerReadiness(req, res)).catch(next);
+});
 /**
  * .get: - tells Express to listen for HTTP GET requests specifically
  * /healthz: This is the path (or route) that the handler will respond to. 
@@ -46,11 +49,27 @@ app.get('/api/healthz', handlerReadiness)
  * if/when next() is called, it calls handlerReadiness.
  */
 
-app.get('/admin/metrics', handlerMetrics)
-app.post('/admin/reset', handlerReset)
-app.post('/api/validate_chirp', handlerChirpsValidate)
+app.get('/admin/metrics', (req, res, next) => {
+  Promise.resolve(handlerMetrics(req, res)).catch(next);
+});
+
+app.post('/admin/reset', (req, res, next) => {
+  Promise.resolve(handlerReset(req, res)).catch(next);
+});
+
+app.post('/api/validate_chirp', (req, res, next) => {
+  Promise.resolve(handlerChirpsValidate(req, res)).catch(next);
+});
+
+app.use(middlewareHandleError);
+/**Error handling middleware needs to be defined last, 
+ * after all your other app.use() and route handlers (app.post, app.get, etc.),
+ * but before app.listen. 
+ * */
 
 app.listen(PORT, () => {
   console.log(`Server is runing at http://localhost:${PORT}`)
 });
+
+
 
