@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 
 import { respondWithJSON } from "./json.js";
+import { BadRequestError } from "./errors.js";
 
 export async function handlerChirpsValidate(req: Request, res: Response) {
   type parameters = {
@@ -11,25 +12,22 @@ export async function handlerChirpsValidate(req: Request, res: Response) {
 
   const maxChirpLength = 140;
   if (params.body.length > maxChirpLength) {
-    throw new Error("Chirp is too long");
+    throw new BadRequestError(
+      `Chirp is too long. Max length is ${maxChirpLength}`
+    );
   }
 
-  const cleanedBody = cleanBody(params.body);
+  const badWords = ["kerfuffle", "sharbert", "fornax"];
+
+  const cleanedBody = params.body.split(" ")
+    .map((word) =>
+      badWords.includes(word.toLowerCase()) ? "****" : word
+    )
+    .join(" ");
+
 
   respondWithJSON(res, 200, {
     cleanedBody: cleanedBody,
   });
   
-}
-
-function cleanBody(body: string) {
-
-  const badWords = ["kerfuffle", "sharbert", "fornax"];
-
-  return body
-    .split(" ")
-    .map((word) =>
-      badWords.includes(word.toLowerCase()) ? "****" : word
-    )
-    .join(" ");
 }
