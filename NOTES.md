@@ -4,12 +4,12 @@
 
 Connect to database when installed as a (Linux SNAP):
 ```
-//bash
+#bash
 postgresql.psql -U postgres
 ```
 
 Connect to database (Linux APT):
 ```
-//bash
+#bash
 sudo -u postgres psql
 ```
