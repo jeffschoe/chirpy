@@ -1,28 +1,45 @@
+import type { MigrationConfig } from "drizzle-orm/migrator";
+
 import { loadEnvFile } from "node:process";
 
-/**
- * this file will hold any stateful, in-memory data we'll need to keep track of. 
- * In our case, we just need to keep track of the number of requests 
- * we've received.
- */
 
-loadEnvFile();
+type Config = {
+  api: APIConfig;
+  db: DBConfig;
+};
 
 type APIConfig = {
   fileServerHits: number;
-  dbURL: string;
+  port: number;
 }
 
-export const config: APIConfig = {
-  fileServerHits: 0,
-  dbURL: envOrThrow("DB_URL"),
+type DBConfig = {
+  dbURL: string;
+  migrationConfig: MigrationConfig;
 }
+
+loadEnvFile();
 
 function envOrThrow(key: string) {
   //generic, so can be used for dbURL string, or other env vars
   const value = process.env[key];
   if (value === undefined) {
-    throw new Error(`Missing required env var: ${key}`);
+    throw new Error(`Environment variable ${key} is not set`);
   }
   return value; // found val for the key
+}
+
+const migrationConfig: MigrationConfig = {
+  migrationsFolder: "./src/db/migrations",
+};
+
+export const config: Config = {
+  api: {
+    fileServerHits: 0,
+    port: Number(envOrThrow("PORT"))
+  },
+  db: {
+    dbURL: envOrThrow("DB_URL"),
+    migrationConfig: migrationConfig,
+  },
 }

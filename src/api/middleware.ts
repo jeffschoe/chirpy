@@ -38,7 +38,7 @@ export function middlewareMetricsInc(
   _req: Request, 
   _res: Response, 
   next: NextFunction) {
-    config.fileServerHits++;
+    config.api.fileServerHits++;
     next();
 }
 
