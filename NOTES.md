@@ -35,3 +35,8 @@ Connect to database (Mac):
 ```bash
 psql chirpy
 ```
+
+### Starting the project
+```bash
+npm run dev | tee server.log
+```
