@@ -20,7 +20,6 @@ export async function handlerReadiness(req: Request, res: Response) {
   res.send("OK");
 
   logResponse(res);
-
 }
 
 function logRequest(req: Request) {

@@ -26,5 +26,4 @@ export async function handlerReset(_req: Request, res: Response) {
    * res.write("Hits reset to 0");
    * res.end();
    */
-
 }

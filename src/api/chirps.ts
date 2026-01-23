@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 
-import { respondWithJSON } from "./json.js";
-import { BadRequestError } from "./errors.js";
-import { createChirp, getChirps } from "../db/queries/chirps.js";
+import { respondWithError, respondWithJSON } from "./json.js";
+import { BadRequestError, NotFoundError } from "./errors.js";
+import { createChirp, getChirp, getChirps } from "../db/queries/chirps.js";
 
 
 export async function handlerChirpsCreate(req: Request, res: Response) {
@@ -43,8 +43,7 @@ function validateChirp(body: string): string {
     )
     .join(" ");
 
-  return cleanedBody;
-  
+  return cleanedBody; 
 }
 
 export async function handlerChirpsRetrieve(_req: Request, res: Response) {
@@ -55,5 +54,16 @@ export async function handlerChirpsRetrieve(_req: Request, res: Response) {
   }
 
   respondWithJSON(res, 200, chirps);
+}
+
+export async function handlerChirpRetrieve(req: Request, res: Response) {
   
+  const chirpId = req.params.chirpId;
+
+  const chirp = await getChirp(chirpId);
+  if (!chirp) {
+    throw new NotFoundError(`Could not get chirp with id: ${chirpId}`);
+  }
+
+  respondWithJSON(res, 200, chirp);
 }
