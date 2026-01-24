@@ -18,6 +18,7 @@ import {
 } from "./api/chirps.js";
 import { config } from "./config.js";
 import { handlerUsersCreate } from "./api/users.js";
+import { handlerLogin } from "./api/auth.js";
 
 
 const migrationClient = postgres(config.db.dbURL, { max: 1 });
@@ -60,18 +61,25 @@ app.get('/api/healthz', (req, res, next) => {
  * if/when next() is called, it calls handlerReadiness.
  */
 
+//admin
 app.get('/admin/metrics', (req, res, next) => {
   Promise.resolve(handlerMetrics(req, res)).catch(next);
 });
-
 app.post('/admin/reset', (req, res, next) => {
   Promise.resolve(handlerReset(req, res)).catch(next);
 });
 
+//users
 app.post('/api/users', (req, res, next) => {
   Promise.resolve(handlerUsersCreate(req, res)).catch(next);
 });
 
+// login
+app.post('/api/login', (req, res, next) => {
+  Promise.resolve(handlerLogin(req, res)).catch(next);
+});
+
+//chirps
 app.post('/api/chirps', (req, res, next) => {
   Promise.resolve(handlerChirpsCreate(req, res)).catch(next);
 });

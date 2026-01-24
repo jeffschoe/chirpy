@@ -22,6 +22,13 @@
       "when": 1769054746186,
       "tag": "0002_glossy_king_bedlam",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1769215389891,
+      "tag": "0003_chief_hiroim",
+      "breakpoints": true
     }
   ]
 }

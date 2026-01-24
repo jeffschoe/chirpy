@@ -12,14 +12,16 @@ export async function createChirp(chirp: NewChirp) {
 }
 
 export async function getChirps() {
-    const rows = await db.select()
+    const rows = await db
+    .select()
     .from(chirps)
     .orderBy(asc(chirps.createdAt));
     return rows;
 }
 
 export async function getChirp(id: string) {
-    const [result] = await db.select()
+    const [result] = await db
+    .select()
     .from(chirps)
     .where(eq(chirps.id, id))
     return result;
