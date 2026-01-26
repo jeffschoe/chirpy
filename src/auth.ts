@@ -1,8 +1,9 @@
 import argon2 from 'argon2';
 import jwt from "jsonwebtoken";
+import type { Request } from "express";
 import type { JwtPayload } from "jsonwebtoken";
 
-import { UserNotAuthenticatedError } from './api/errors';
+import { BadRequestError, UserNotAuthenticatedError } from './api/errors.js';
 
 const TOKEN_ISSUER = "chirpy";
 
@@ -57,9 +58,34 @@ export function validateJWT(tokenString: string, secret: string) {
     throw new UserNotAuthenticatedError("Invalid issuer");
   }
 
+  // sub = subject of the token, which is the user's ID
   if (typeof decoded.sub !== "string") {
     throw new UserNotAuthenticatedError("No user ID in token");
   }
 
   return decoded.sub;
+}
+
+export function getBearerToken(req: Request) {
+  const authHeader = req.get('Authorization');
+  if (!authHeader) {
+    throw new BadRequestError("Authorization header does not exist");
+  }
+  
+
+  return extractBearerToken(authHeader);
+
+}
+
+export function extractBearerToken(header: string) {
+  if (header.slice(0,7) !== "Bearer ") {
+    throw new BadRequestError("Malformed Authorization header");
+  }
+  const tokenString = header.slice(7,);
+  if (tokenString.length === 0) {
+    throw new BadRequestError("Authorization header token string missing");
+  }
+
+  return tokenString
+
 }

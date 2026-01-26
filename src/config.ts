@@ -6,6 +6,7 @@ import { loadEnvFile } from "node:process";
 type Config = {
   api: APIConfig;
   db: DBConfig;
+  jwt: JWTConfig
 };
 
 type APIConfig = {
@@ -17,6 +18,12 @@ type APIConfig = {
 type DBConfig = {
   dbURL: string;
   migrationConfig: MigrationConfig;
+}
+
+type JWTConfig = {
+  defaultDuration: number;
+  secret: string;
+  issuer: string;
 }
 
 loadEnvFile();
@@ -44,4 +51,9 @@ export const config: Config = {
     dbURL: envOrThrow("DB_URL"),
     migrationConfig: migrationConfig,
   },
+  jwt: {
+    defaultDuration: 60 * 60, // 1 hour in seconds
+    secret: envOrThrow("JWT_SECRET"),
+    issuer: "chirpy"
+  }
 }
