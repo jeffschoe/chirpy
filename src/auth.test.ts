@@ -1,5 +1,12 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { checkPasswordHash, hashPassword, makeJWT, validateJWT } from "./auth";
+import { 
+  checkPasswordHash, 
+  extractBearerToken, 
+  hashPassword, 
+  makeJWT, 
+  validateJWT 
+} from "./auth";
+import { BadRequestError, UserNotAuthenticatedError } from "./api/errors";
 
 describe("Password Hashing", () => {
   // everything inside here is about `Password Hashing`
@@ -78,15 +85,50 @@ describe("JSON Web token (JWT) creation and validation", () => {
   });
 
   it("should throw for a JWT signed with the wrong secret", () => {
-    expect(() => validateJWT(token1, secret2)).toThrow();
+    expect(() => validateJWT(token1, secret2)).toThrow(
+      UserNotAuthenticatedError
+    );
   });
 
   it("should throw for an expired JWT token", () => {
-    expect(() => validateJWT(expiredToken, secret1)).toThrow();
+    expect(() => validateJWT(expiredToken, secret1)).toThrow(
+      UserNotAuthenticatedError
+    );
   });
 
   it("should throw for a malformed token string", () => {
-    expect(() => validateJWT("not-a-real-token", secret1)).toThrow();
+    expect(() => validateJWT("not-a-real-token", secret1)).toThrow(
+      UserNotAuthenticatedError
+    );
   });
 
+});
+
+describe("extractBearerToken", () => {
+  it("should extract the token from a valid header", () => {
+    const token = "mySecretToken";
+    const header = `Bearer ${token}`;
+    expect(extractBearerToken(header)).toBe(token);
+  });
+
+  it("should extract the token even if there are extra parts", () => {
+    const token = "mySecretToken";
+    const header = `Bearer ${token} extra-data`;
+    expect(extractBearerToken(header)).toBe(token);
+  });
+
+  it("should throw a BadRequestError if the header does not contain at least two parts", () => {
+    const header = "Bearer";
+    expect(() => extractBearerToken(header)).toThrow(BadRequestError);
+  });
+
+  it('should throw a BadRequestError if the header does not start with "Bearer"', () => {
+    const header = "Basic mySecretToken";
+    expect(() => extractBearerToken(header)).toThrow(BadRequestError);
+  });
+
+  it("should throw a BadRequestError if the header is an empty string", () => {
+    const header = "";
+    expect(() => extractBearerToken(header)).toThrow(BadRequestError);
+  });
 });

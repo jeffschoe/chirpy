@@ -22,7 +22,6 @@ export async function checkPasswordHash(password: string, hash: string) {
   } catch {
     return false;
   }
-
 }
 
 type payload = Pick<JwtPayload, "iss" | "sub" | "iat" | "exp">;
@@ -72,20 +71,13 @@ export function getBearerToken(req: Request) {
     throw new BadRequestError("Authorization header does not exist");
   }
   
-
   return extractBearerToken(authHeader);
-
 }
 
 export function extractBearerToken(header: string) {
-  if (header.slice(0,7) !== "Bearer ") {
-    throw new BadRequestError("Malformed Authorization header");
+  const splitAuth = header.split(" ");
+  if (splitAuth.length < 2 || splitAuth[0] !== "Bearer") {
+    throw new BadRequestError("Malformed authorization header");
   }
-  const tokenString = header.slice(7,);
-  if (tokenString.length === 0) {
-    throw new BadRequestError("Authorization header token string missing");
-  }
-
-  return tokenString
-
+  return splitAuth[1];
 }
