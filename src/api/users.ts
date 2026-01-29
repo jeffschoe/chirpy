@@ -53,17 +53,15 @@ export async function handlerUsersUpdate(req: Request, res: Response) {
 
   //need to check format is "Authorization: Bearer <token>""
   const token = getBearerToken(req);
-
-  const userId = validateJWT(token, config.jwt.secret)
-
+  const subject = validateJWT(token, config.jwt.secret)
   const hashedPassword = await hashPassword(params.password);
  
-  const updatedUser = await updateUser(userId, params.email, hashedPassword);
+  const user = await updateUser(subject, params.email, hashedPassword);
 
   respondWithJSON(res, 200, {
-    id: updatedUser.id,
-    email: updatedUser.email,
-    createdAt: updatedUser.createdAt,
-    updatedAt: updatedUser.updatedAt,
+    id: user.id,
+    email: user.email,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
   } satisfies UserResponse);
 }

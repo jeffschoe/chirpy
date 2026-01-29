@@ -12,7 +12,7 @@ import {
   middlewareMetricsInc 
 } from "./api/middleware.js";
 import { 
-  handlerChirpRetrieve, 
+  handlerChirpRetrieve as handlerChirpsGet, 
   handlerChirpsCreate, 
   handlerChirpsRetrieve 
 } from "./api/chirps.js";
@@ -96,7 +96,7 @@ app.get('/api/chirps', (req, res, next) => {
   Promise.resolve(handlerChirpsRetrieve(req, res)).catch(next);
 });
 app.get('/api/chirps/:chirpId', (req, res, next) => {
-  Promise.resolve(handlerChirpRetrieve(req, res)).catch(next);
+  Promise.resolve(handlerChirpsGet(req, res)).catch(next);
 });
 
 
