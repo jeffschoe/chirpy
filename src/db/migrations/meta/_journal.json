@@ -29,6 +29,13 @@
       "when": 1769215389891,
       "tag": "0003_chief_hiroim",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1769484879599,
+      "tag": "0004_breezy_jubilee",
+      "breakpoints": true
     }
   ]
 }
