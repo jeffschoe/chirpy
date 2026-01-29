@@ -68,7 +68,7 @@ export function validateJWT(tokenString: string, secret: string) {
 export function getBearerToken(req: Request) {
   const authHeader = req.get('Authorization');
   if (!authHeader) {
-    throw new BadRequestError("Authorization header does not exist");
+    throw new UserNotAuthenticatedError("Malformed authorization header");
   }
   
   return extractBearerToken(authHeader);

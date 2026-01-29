@@ -3,7 +3,6 @@
 import { db } from "../index.js";
 import { 
   refreshTokens, 
-  NewToken,
   users, 
 } from "../schema.js";
 
