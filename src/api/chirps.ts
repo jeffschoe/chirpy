@@ -60,7 +60,19 @@ export async function handlerChirpsRetrieve(_req: Request, res: Response) {
   respondWithJSON(res, 200, chirps);
 }
 
-export async function handlerChirpRetrieve(req: Request, res: Response) {
+export async function handlerChirpsGet(req: Request, res: Response) {
+  
+  const chirpId = req.params.chirpId;
+
+  const chirp = await getChirp(chirpId);
+  if (!chirp) {
+    throw new NotFoundError(`Could not get chirp with id: ${chirpId}`);
+  }
+
+  respondWithJSON(res, 200, chirp);
+}
+
+export async function handlerChirpsDelete(req: Request, res: Response) {
   
   const chirpId = req.params.chirpId;
 
