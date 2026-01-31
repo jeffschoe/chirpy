@@ -20,6 +20,7 @@ import {
 import { config } from "./config.js";
 import { handlerUsersCreate, handlerUsersUpdate } from "./api/users.js";
 import { handlerLogin, handlerRefresh, handlerRevoke } from "./api/auth.js";
+import { handlerWebhook } from "./api/webhooks.js";
 
 
 const migrationClient = postgres(config.db.dbURL, { max: 1 });
@@ -68,6 +69,11 @@ app.get('/admin/metrics', (req, res, next) => {
 });
 app.post('/admin/reset', (req, res, next) => {
   Promise.resolve(handlerReset(req, res)).catch(next);
+});
+
+//webhooks
+app.post('/api/polka/webhooks', (req, res, next) => {
+  Promise.resolve(handlerWebhook(req, res)).catch(next);
 });
 
 // auth
