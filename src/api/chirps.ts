@@ -50,12 +50,16 @@ function validateChirp(body: string): string {
   return cleanedBody; 
 }
 
-export async function handlerChirpsRetrieve(_req: Request, res: Response) {
-  
-  const chirps = await getChirps();
-  if (!chirps) {
-    throw new Error(`Could not get chirps`);
+export async function handlerChirpsRetrieve(req: Request, res: Response) {
+  let authorId: string | undefined = undefined;
+  let authorIdQuery = req.query.authorId;
+
+  if (typeof authorIdQuery === "string") {
+    // they have passed the optional authorId parameter
+    authorId = authorIdQuery;
   }
+
+  const chirps = await getChirps(authorId);
 
   respondWithJSON(res, 200, chirps);
 }

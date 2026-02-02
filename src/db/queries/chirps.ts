@@ -11,20 +11,23 @@ export async function createChirp(chirp: NewChirp) {
   return rows;
 }
 
-export async function getChirps() {
-    const rows = await db
-      .select()
-      .from(chirps)
-      .orderBy(asc(chirps.createdAt));
-    return rows;
+export async function getChirps(authorId?: string) {
+  const baseQuery = db.select().from(chirps);
+
+  const queryWithFilter = authorId
+    ? baseQuery.where(eq(chirps.userId, authorId))
+    : baseQuery;
+
+  const rows = await queryWithFilter.orderBy(asc(chirps.createdAt));
+  return rows;
 }
 
 export async function getChirp(id: string) {
-    const [result] = await db
-      .select()
-      .from(chirps)
-      .where(eq(chirps.id, id))
-    return result;
+  const [result] = await db
+    .select()
+    .from(chirps)
+    .where(eq(chirps.id, id))
+  return result;
 }
 
 export async function deleteChirp(id: string) {
