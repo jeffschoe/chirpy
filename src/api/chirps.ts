@@ -51,15 +51,24 @@ function validateChirp(body: string): string {
 }
 
 export async function handlerChirpsRetrieve(req: Request, res: Response) {
-  let authorId: string | undefined = undefined;
-  let authorIdQuery = req.query.authorId;
-
-  if (typeof authorIdQuery === "string") {
-    // they have passed the optional authorId parameter
-    authorId = authorIdQuery;
+  const { authorId, sort } = req.query;
+  
+  let authorIdQuery: string | undefined;
+  if (typeof authorId === "string") {
+    authorIdQuery = authorId;
   }
 
-  const chirps = await getChirps(authorId);
+  let sortQuery: "asc" | "desc" | undefined;
+  if (sort === "asc" || sort === "desc") {
+    sortQuery = sort;
+  }
+
+  const options = {
+    authorId: authorIdQuery,
+    sort: sortQuery,
+  }
+ 
+  const chirps = await getChirps(options);
 
   respondWithJSON(res, 200, chirps);
 }

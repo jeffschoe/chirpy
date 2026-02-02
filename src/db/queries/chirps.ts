@@ -1,4 +1,4 @@
-import { asc, eq, and } from "drizzle-orm";
+import { asc, desc, eq, and } from "drizzle-orm";
 import { db } from "../index.js";
 import { NewChirp, chirps } from "../schema.js";
 
@@ -11,15 +11,36 @@ export async function createChirp(chirp: NewChirp) {
   return rows;
 }
 
-export async function getChirps(authorId?: string) {
-  const baseQuery = db.select().from(chirps);
+export async function getChirps(options?: {
+  authorId?: string;
+  sort?: "asc" | "desc";
+}) {
+  //nullish coalescing: if options is null or undefined, it uses {} instead.
+  const { authorId, sort } = options ?? {}; 
 
-  const queryWithFilter = authorId
-    ? baseQuery.where(eq(chirps.userId, authorId))
-    : baseQuery;
+  //base query that gets everything
+  const base = db.select().from(chirps);
 
-  const rows = await queryWithFilter.orderBy(asc(chirps.createdAt));
-  return rows;
+  //withFilters handles only conditional WHERE logic.
+  const withFilters = //ternary op to get filters
+    authorId
+      ? base.where(
+          and(
+            authorId ? eq(chirps.userId, authorId) : undefined,
+          ),
+        )
+      : base;
+
+
+  //sorting at the end
+  let withSorting;
+
+  withSorting = (sort === "asc") //ternary for ordering
+  ? await withFilters.orderBy(asc(chirps.createdAt))
+  : await withFilters.orderBy(desc(chirps.createdAt))
+
+  return withSorting;
+  
 }
 
 export async function getChirp(id: string) {
