@@ -161,7 +161,16 @@ Improvements, fixes, or other notable upgrades I have implemented beyond the bas
 
 Ideas for how I could continue to extend this project beyond the base project:
 
-- More to come
+- More sorting & filtering
+- Pagination
+- Likes/Rechirps
+- Mentions & hashtags
+- Rate limiting/abuse protection
+- Soft delete & edit history
+- Full-text search
+- Better auth features
+- WebSocket or SSE feed
+- Front-end polish
 
 ---
 
