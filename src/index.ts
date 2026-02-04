@@ -50,18 +50,6 @@ app.use(
 app.get('/api/healthz', (req, res, next) => {
   Promise.resolve(handlerReadiness(req, res)).catch(next);
 });
-/**
- * .get: - tells Express to listen for HTTP GET requests specifically
- * /healthz: This is the path (or route) that the handler will respond to. 
- * So when someone makes a GET request to http://localhost:8080/healthz, 
- * this handler will be triggered
- * handlerReadiness: This is the handler function that will execute when a 
- * GET request comes in to /healthz
- * Express automatically creates the req and res objects for us, 
- * they are not explicity passed
- * NOTE, Express still calls middlewareLogResponse first, then 
- * if/when next() is called, it calls handlerReadiness.
- */
 
 //admin
 app.get('/admin/metrics', (req, res, next) => {
