@@ -274,7 +274,7 @@ Returns chirps filtered and sorted according to the supplied query parameters.
 ### Query Parameters
 
 - `authorId` (optional, string) – filter chirps by author
-- `sort` (optional, `"asc"` | `"desc"`, default `"asc"`)
+- `sort` (optional, `"asc"` | `"desc"`, default `"asc"`) - sort chirps in ascending or descending order by creation date
 
 ### Response
 
