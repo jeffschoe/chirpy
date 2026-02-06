@@ -79,12 +79,6 @@ export async function handlerChirpsRetrieve(req: Request, res: Response) {
   respondWithJSON(res, 200, chirps);
 }
 
-/**
- * ?sort=created_at:asc
-   ?sort=created_at:desc
-   ?sort=body:asc
-   ?sort=email:desc
- */
 export type SortField = "created_at" | "body" | "email";
 export type SortDirection = "asc" | "desc";
 
