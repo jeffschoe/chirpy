@@ -154,6 +154,7 @@ Improvements, fixes, or other notable upgrades I have implemented beyond the bas
 
 - Documented endpoints in great detail in this README
 - Upgraded the `/api/chirps` endpoint to dynamically build a query for filtering/sorting based on optional parameters, opposed to fetching the entire `chirps` table and sorting in memory, reducing network usage.
+- Added optional sorting by `body`, `created_at` and `email` for the `/api/chirps` endpoint. Sorting is done at the query level.
 
 ---
 

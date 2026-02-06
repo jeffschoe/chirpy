@@ -273,8 +273,25 @@ Returns chirps filtered and sorted according to the supplied query parameters.
 
 ### Query Parameters
 
-- `authorId` (optional, string) – filter chirps by author
-- `sort` (optional, `"asc"` | `"desc"`, default `"asc"`) - sort chirps in ascending or descending order by creation date
+- `author_id` (optional, string) – filter chirps by author (matches `userId/user_id` on the chirps table)
+- `sort` (optional, string) - sort chirps in ascending or descending order by various fields.
+    - `sort=asc` / `sort=desc` → shorthand for `created_at:asc` / `created_at:desc`
+    - `sort=created_at:asc` 
+    - `sort=created_at:desc`
+    - `sort=body:asc`
+    - `sort=body:desc`
+    - `sort=email:asc`
+    - `sort=email:desc`
+    - Default: `created_at:asc` if `sort` is not provided.
+
+### Example Requests
+
+GET http://localhost:8080/api/chirps
+GET http://localhost:8080/api/chirps?sort=desc
+GET http://localhost:8080/api/chirps?sort=body:desc
+GET http://localhost:8080/api/chirps?author_id=eff63ae0-9207-4258-ae4d-b278529e60f4
+GET http://localhost:8080/api/chirps?sort=body:desc&author_id=eff63ae0-9207-4258-ae4d-b278529e60f4
+
 
 ### Response
 
